@@ -11,8 +11,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-root',
   imports: [RouterOutlet,
             NavbarComponent,
-            LoginComponent,
-            RegisterComponent,
             FormsModule],
   standalone: true,
   
