@@ -5,12 +5,16 @@ import{ Router } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet,
             NavbarComponent,
             LoginComponent,
-            RegisterComponent],
+            RegisterComponent,
+            FormsModule],
+  standalone: true,
   
   
   
