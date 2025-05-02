@@ -1,1 +1,76 @@
-<p>register works!</p>
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+      <h2>Register</h2>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="user.name"
+          required
+          minlength="2"
+          placeholder="Enter your name"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.submitted && registerForm.controls['name']?.invalid" class="error">
+          Name is required and must be at least 2 characters.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="user.email"
+          required
+          email
+          placeholder="Enter your email"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.submitted && registerForm.controls['email']?.invalid" class="error">
+          Please enter a valid email.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="user.password"
+          required
+          minlength="6"
+          placeholder="Enter your password"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.submitted && registerForm.controls['password']?.invalid" class="error">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="user.confirmPassword"
+          required
+          minlength="6"
+          placeholder="Confirm your password"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.submitted && registerForm.controls['confirmPassword']?.invalid" class="error">
+          Please confirm your password.
+        </div>
+        <div *ngIf="registerForm.submitted && user.password !== user.confirmPassword && user.confirmPassword" class="error">
+          Passwords do not match.
+        </div>
+      </div>
+      <button type="submit" [disabled]="registerForm.invalid || user.password !== user.confirmPassword" class="btn-primary">Register</button>
+      <p>
+        Already have an account? <a routerLink="/login">Login here</a>
+      </p>
+    </div>
+  </form>
