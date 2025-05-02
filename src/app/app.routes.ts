@@ -12,7 +12,9 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
    {path : 'plants', component: PlantsComponent},
-   {path :'home' , component :HomeComponent}
+   {path :'home' , component :HomeComponent},
+   {path : '' , redirectTo : 'home' , pathMatch : 'full'},
+   {path : '**' , redirectTo : 'home' , pathMatch : 'full'},
 
 ];
 
