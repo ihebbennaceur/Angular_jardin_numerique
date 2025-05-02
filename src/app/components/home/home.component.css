@@ -1,0 +1,140 @@
+/* Conteneur principal */
+.home-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Titre principal */
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  
+  /* Sous-titre */
+  .subtitle {
+    text-align: center;
+    color: #636e72;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  
+  /* Grille des plantes */
+  .plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px;
+  }
+  
+  /* Carte de plante */
+  .plant-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .plant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Image de la plante */
+  .plant-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid #dfe6e9;
+  }
+  
+  /* Informations de la plante */
+  .plant-info {
+    padding: 20px;
+  }
+  
+  /* Nom de la plante */
+  .plant-info h2 {
+    color: #34495e;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 10px;
+  }
+  
+  /* Description */
+  .description {
+    color: #636e72;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 10px;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Créateur */
+  .created-by {
+    color: #0984e3;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  /* Accessibilité */
+  .plant-card:focus-within {
+    outline: 2px solid #0984e3;
+    outline-offset: 2px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .home-container {
+      margin: 20px auto;
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 28px;
+    }
+  
+    .subtitle {
+      font-size: 14px;
+    }
+  
+    .plant-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+  
+    .plant-image {
+      height: 200px;
+    }
+  
+    .plant-info h2 {
+      font-size: 20px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .plant-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .plant-image {
+      height: 180px;
+    }
+  
+    .home-container {
+      margin: 15px;
+      padding: 10px;
+    }
+  }

@@ -6,4 +6,6 @@ export class User {
     email: string = '';
     password: string = '';
     confirmPassword: string = '';
+    photo :string = '';
+    is_admin: boolean = false;
   }

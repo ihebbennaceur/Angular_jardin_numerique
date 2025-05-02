@@ -1,0 +1,14 @@
+<div class="home-container">
+    <h1>Our Plant Collection</h1>
+    <p class="subtitle">Discover a variety of beautiful plants from our community.</p>
+    <div class="plant-grid">
+      <div *ngFor="let plant of plants" class="plant-card">
+        <img [src]="plant.image_url" [alt]="plant.name" class="plant-image" />
+        <div class="plant-info">
+          <h2>{{ plant.name }}</h2>
+          <p class="description">{{ plant.description }}</p>
+          <p class="created-by">Added by: {{ plant.created_by }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
