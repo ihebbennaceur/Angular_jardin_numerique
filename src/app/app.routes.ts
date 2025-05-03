@@ -6,6 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component'; 
 import { PlantsComponent } from './pages/plants/plants.component';
 import { HomeComponent } from './components/home/home.component';
+import { MyprofileComponent } from './pages/myprofile/myprofile.component';
 
 export const routes: Routes = [
 
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
    {path : 'plants', component: PlantsComponent},
    {path :'home' , component :HomeComponent},
+   {path :'myprofile' , component : MyprofileComponent},
    {path : '' , redirectTo : 'home' , pathMatch : 'full'},
    {path : '**' , redirectTo : 'home' , pathMatch : 'full'},
 
