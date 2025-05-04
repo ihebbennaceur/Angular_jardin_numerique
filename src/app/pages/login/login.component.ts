@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 //import les directives ng if
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -17,14 +18,14 @@ import { RouterLink } from '@angular/router';
 export class LoginComponent {
 
   email: string = '';
-  password: string = '';
+  mot_de_passe: string = '';
 
-  constructor() {}
+  constructor(private userService: UserService) {}
 
   onSubmit() {
     // Handle login logic here
     console.log('Email:', this.email);
-    console.log('Password:',this.password);
+    console.log('Password:',this.mot_de_passe);
 
 }
 }
