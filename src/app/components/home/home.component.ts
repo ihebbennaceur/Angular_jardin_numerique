@@ -1,36 +1,4 @@
-// import { Component } from '@angular/core';
-// import { OnInit } from '@angular/core';
 
-// import { NgFor } from '@angular/common';
-// import { RouterLink } from '@angular/router';
-// import { Plant } from '../../models/plant.model';
-// import { PlantService } from '../../plant.service';
-
-
-// @Component({
-//   selector: 'app-home',
-//   imports: [NgFor,RouterLink],
-//   templateUrl: './home.component.html',
-//   styleUrl: './home.component.css'
-// })
-// export class HomeComponent implements OnInit {
-//   plants: Plant[] = [];
-
-//   constructor(private plantService: PlantService) {}
-
-//   ngOnInit(): void {
-//     this.plantService.getPlants().subscribe((data: Plant[]) => {
-//       this.plants = data;
-//     });
-//   }
-
-
-//   onPlantClick(plant: Plant): void {
-//     console.log('Clicked plant:', plant);
-    
-//   }
-
-// }
 
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';

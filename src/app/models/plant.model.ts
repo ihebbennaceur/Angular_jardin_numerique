@@ -1,8 +1,8 @@
-export class Plant {    
+export interface Plant {    
 
-    id : number = 0;
-    name : string = '';
-    description : string = '';
-    image_url:string='';
-    created_by : string=  '' ;
+    id : number ;
+    name : string ;
+    description : string ;
+    image_url:string;
+    created_by : string ;
 }

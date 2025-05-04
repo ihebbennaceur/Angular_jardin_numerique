@@ -7,7 +7,7 @@
           type="text"
           id="name"
           name="name"
-          [(ngModel)]="user.name"
+          [(ngModel)]="user.nom"
           required
           minlength="2"
           placeholder="Enter your name"
@@ -39,7 +39,7 @@
           type="password"
           id="password"
           name="password"
-          [(ngModel)]="user.password"
+          [(ngModel)]="user.mot_de_passe"
           required
           minlength="6"
           placeholder="Enter your password"
@@ -64,11 +64,11 @@
         <div *ngIf="registerForm.submitted && registerForm.controls['confirmPassword']?.invalid" class="error">
           Please confirm your password.
         </div>
-        <div *ngIf="registerForm.submitted && user.password !== user.confirmPassword && user.confirmPassword" class="error">
+        <div *ngIf="registerForm.submitted && user.mot_de_passe !== user.confirmPassword && user.confirmPassword" class="error">
           Passwords do not match.
         </div>
       </div>
-      <button type="submit" [disabled]="registerForm.invalid || user.password !== user.confirmPassword" class="btn-primary">Register</button>
+      <button type="submit" [disabled]="registerForm.invalid || user.mot_de_passe !== user.confirmPassword" class="btn-primary">Register</button>
       <p>
         Already have an account? <a routerLink="/login">Login here</a>
       </p>
