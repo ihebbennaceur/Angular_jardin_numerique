@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { of } from 'rxjs'; // <-- Utilisé pour le mock
-import { delay } from 'rxjs/operators'; // <-- Pour simuler un délai réseau
+import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -16,38 +16,35 @@ export class MyProfileComponent implements OnInit {
   profileForm!: FormGroup;
   photoFile: File | null = null;
   photoPreview: string | SafeUrl | null = null;
+  error: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    console.log('Init du composant MyProfile');
-
     this.profileForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
+      nom: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.minLength(6)]]
+      mot_de_passe: ['', [Validators.minLength(6)]]
     });
 
-    // ✅ Mock User
-    const mockUser = {
-      nom: 'Jean Dupont',
-      email: 'jean.dupont@example.com',
-      photo: 'assets/profile2.jpg'
-    };
-
-    of(mockUser)
-      .pipe(delay(500)) // Simule une réponse asynchrone
-      .subscribe((user) => {
+    this.userService.getProfile().subscribe({
+      next: (user) => {
+        console.log('Utilisateur:', user);
         this.profileForm.patchValue({
-          name: user.nom,
+          nom: user.nom,
           email: user.email
         });
-        this.photoPreview = user.photo;
-        console.log('Mock user chargé avec succès.');
-      });
+        // this.photoPreview = user.profilepic ? user.profilepic : 'assets/profile.jpg';
+      },
+      error: () => {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   onFileChange(event: Event): void {
@@ -64,11 +61,35 @@ export class MyProfileComponent implements OnInit {
 
   onSubmit(): void {
     if (this.profileForm.invalid) {
-      console.warn('Formulaire invalide');
+      this.profileForm.markAllAsTouched();
       return;
     }
-
-    alert('Mock : Profil mis à jour !');
-    console.log('FormData simulé :', this.profileForm.value);
+  
+    const formData = new FormData();
+    formData.append('nom', this.profileForm.get('nom')?.value);
+    formData.append('email', this.profileForm.get('email')?.value);
+    
+    const motDePasse = this.profileForm.get('mot_de_passe')?.value;
+    if (motDePasse) {
+      formData.append('mot_de_passe', motDePasse);
+    }
+  
+    // ❌ NE PAS inclure la photo si tu ne veux pas la mettre à jour
+    // if (this.photoFile) {
+    //   formData.append('photo', this.photoFile);
+    // }
+  
+    this.userService.updateProfile(formData).subscribe({
+      next: (response) => {
+        alert(response.message);
+        this.error = null;
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Erreur lors de la mise à jour du profil';
+        console.error('Erreur:', err);
+      }
+    });
   }
+  
+  
 }

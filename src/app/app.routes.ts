@@ -7,16 +7,17 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlantsComponent } from './pages/plants/plants.component';
 import { HomeComponent } from './components/home/home.component';
 import { MyProfileComponent } from './pages/myprofile/myprofile.component';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
 
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent ,canActivate: [LoginGuard]},
     { path: 'register', component: RegisterComponent },
    {path : 'plants', component: PlantsComponent},
    {path :'home' , component :HomeComponent},
    {path :'myprofile' , component : MyProfileComponent},
-   {path : '' , redirectTo : 'home' , pathMatch : 'full'},
-   {path : '**' , redirectTo : 'home' , pathMatch : 'full'},
+   {path : '' , redirectTo : 'login' , pathMatch : 'full'},
+   {path : '**' , redirectTo : 'login' , pathMatch : 'full'},
 
 ];
 

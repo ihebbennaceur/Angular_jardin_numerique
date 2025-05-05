@@ -1,8 +1,22 @@
-<nav class="navbar">
+<!-- <nav class="navbar">
     <a routerLink="/">Home</a>
     <a routerLink="/login">Login</a>
     <a routerLink="/register">Register</a>
     <a routerLink="/myprofile">Profile</a>
     <input type="text" placeholder="Rechercher une plante..." />
+  </nav>
+  -->
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a routerLink="/">Home</a>
+      <a *ngIf="!userService.isLoggedIn()" routerLink="/register">Register</a>
+      <a *ngIf="userService.isLoggedIn()" routerLink="/myprofile">Profile</a>
+      <input type="text" placeholder="Rechercher une plante..." />
+    </div>
+    <div class="navbar-right">
+      <a *ngIf="!userService.isLoggedIn()" routerLink="/login">Login</a>
+      <button *ngIf="userService.isLoggedIn()" (click)="logout()">Logout</button>
+    </div>
   </nav>
   

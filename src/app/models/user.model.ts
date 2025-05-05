@@ -4,6 +4,6 @@ export class User {
   email: string = '';
   mot_de_passe: string = '';
   confirmPassword?: string = '';
-  photo: string = '';
+  profilepic: string = 'assets/profile2.jpg';
   role: string = 'user';  
 }
