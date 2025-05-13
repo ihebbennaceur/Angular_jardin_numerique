@@ -1,45 +1,62 @@
-
-
-import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
-
-export class Plant {
-  id: number = 0;
-  name: string = '';
-  description: string = '';
-  image_url: string = '';
-  created_by: string = '';
-}
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PlantService } from '../../services/plant.service';
+import { UserService } from '../../services/user.service';
+import { Plant } from '../../models/plant.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  plants: Plant[] = [
-    {
-      id: 1,
-      name: 'Monstera Deliciosa',
-      description: 'A popular houseplant with large, split leaves. Thrives in bright, indirect light.',
-      image_url: '/assets/Monstera Deliciosa.jpg',
-      created_by: 'Alice'
-    },
-    {
-      id: 2,
-      name: 'Fiddle Leaf Fig',
-      description: 'Known for its large, glossy leaves. Prefers bright light and moderate watering.',
-      image_url: '/assets/Fiddle Leaf Fig.jpg',
-      created_by: 'Bob'
-    },
-    {
-      id: 3,
-      name: 'Snake Plant',
-      description: 'Hardy plant with long, upright leaves. Tolerates low light and infrequent watering.',
-      image_url: '/assets/Snake Plant.jpg',
-      created_by: 'Charlie'
+export class HomeComponent implements OnInit {
+  plants: Plant[] = [];
+  errorMessage: string = '';
+  isAdmin: boolean = false;
+
+  constructor(private plantService: PlantService, private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.loadPlants();
+    if (this.userService.isLoggedIn()) {
+      this.userService.getProfile().subscribe({
+        next: (user) => {
+          localStorage.setItem('user_role', user.role);
+          this.isAdmin = this.userService.isAdmin();
+        },
+        error: (err) => {
+          console.error('Failed to fetch user profile:', err);
+        }
+      });
     }
-  ];
+  }
+
+  loadPlants(): void {
+    this.plantService.getPlants().subscribe({
+      next: (data: Plant[]) => {
+        this.plants = data;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load plants';
+        console.error(err);
+      }
+    });
+  }
+
+  deletePlant(plantId: number): void {
+    if (confirm('Are you sure you want to delete this plant?')) {
+      this.plantService.deletePlant(plantId).subscribe({
+        next: () => {
+          this.plants = this.plants.filter(plant => plant.id !== plantId);
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          this.errorMessage = err.error.detail || 'Failed to delete plant';
+          console.error(err);
+        }
+      });
+    }
+  }
 }

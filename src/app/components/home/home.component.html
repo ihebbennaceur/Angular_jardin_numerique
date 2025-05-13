@@ -8,6 +8,7 @@
           <h2>{{ plant.name }}</h2>
           <p class="description">{{ plant.description }}</p>
           <p class="created-by">Added by: {{ plant.created_by }}</p>
+          <button *ngIf="isAdmin" (click)="deletePlant(plant.id)" class="delete-button">Delete</button>
         </div>
       </div>
     </div>

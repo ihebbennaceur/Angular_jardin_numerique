@@ -16,7 +16,7 @@ export class MyProfileComponent implements OnInit {
   profileForm!: FormGroup;
   photoFile: File | null = null;
   photoPreview: string | SafeUrl | null = null;
-  error: string | null = null;
+  error: string | null = null; // Add this property
 
   constructor(
     private fb: FormBuilder,
@@ -29,67 +29,46 @@ export class MyProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      mot_de_passe: ['', [Validators.minLength(6)]]
+      mot_de_passe: ['']
     });
 
     this.userService.getProfile().subscribe({
       next: (user) => {
-        console.log('Utilisateur:', user);
         this.profileForm.patchValue({
           nom: user.nom,
           email: user.email
         });
-        // this.photoPreview = user.profilepic ? user.profilepic : 'assets/profile.jpg';
+        this.photoPreview = user.profilepic ? user.profilepic : 'assets/profile.jpg';
       },
       error: () => {
+        this.error = 'Failed to load profile information'; // Set error message
         this.router.navigate(['/login']);
       }
     });
   }
 
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.photoFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
-      };
-      reader.readAsDataURL(this.photoFile);
-    }
-  }
-
   onSubmit(): void {
     if (this.profileForm.invalid) {
-      this.profileForm.markAllAsTouched();
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('nom', this.profileForm.get('nom')?.value);
     formData.append('email', this.profileForm.get('email')?.value);
-    
-    const motDePasse = this.profileForm.get('mot_de_passe')?.value;
-    if (motDePasse) {
-      formData.append('mot_de_passe', motDePasse);
+    formData.append('mot_de_passe', this.profileForm.get('mot_de_passe')?.value || '');
+    if (this.photoFile) {
+      formData.append('photo', this.photoFile);
     }
-  
-    // ❌ NE PAS inclure la photo si tu ne veux pas la mettre à jour
-    // if (this.photoFile) {
-    //   formData.append('photo', this.photoFile);
-    // }
-  
+
     this.userService.updateProfile(formData).subscribe({
-      next: (response) => {
-        alert(response.message);
-        this.error = null;
+      next: () => {
+        alert('Profil mis à jour avec succès');
+        this.error = null; // Clear error on success
       },
       error: (err) => {
-        this.error = err.error?.message || 'Erreur lors de la mise à jour du profil';
-        console.error('Erreur:', err);
+        this.error = 'Erreur lors de la mise à jour du profil'; // Set error message
+        console.error('Erreur lors de la mise à jour du profil:', err);
       }
     });
   }
-  
-  
 }

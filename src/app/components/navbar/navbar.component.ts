@@ -11,7 +11,16 @@ import { NgIf } from '@angular/common';
 })
 export class NavbarComponent {
 
-  constructor(public userService: UserService, private router: Router) {}
+  constructor(public userService: UserService, private router: Router) {
+
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+
+
 
 logout() {
   this.userService.logout();

@@ -1,0 +1,84 @@
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <a routerLink="/home">Back to Home</a>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  
+    <h2>Plant Propositions</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proposition of propositions">
+          <td>{{ proposition.name }}</td>
+          <td>{{ proposition.type || 'N/A' }}</td>
+          <td>{{ proposition.description }}</td>
+          <td>
+            <img *ngIf="proposition.image_url" [src]="proposition.image_url" alt="{{ proposition.name }}" class="table-img">
+          </td>
+          <td>{{ proposition.statut }}</td>
+          <td>
+            <button *ngIf="proposition.statut === 'pending'" (click)="approveProposition(proposition.id)">Approve</button>
+            <button *ngIf="proposition.statut === 'pending'" (click)="rejectProposition(proposition.id)">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h2>Approved Plants</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Created By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let plant of plants">
+          <td>{{ plant.name }}</td>
+          <td>{{ plant.type || 'N/A' }}</td>
+          <td>{{ plant.description }}</td>
+          <td>
+            <img *ngIf="plant.image_url" [src]="plant.image_url" alt="{{ plant.name }}" class="table-img">
+          </td>
+          <td>{{ plant.created_by }}</td>
+          <td>
+            <button (click)="deletePlant(plant.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h2>Users</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Profile Picture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.nom }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <img *ngIf="user.profilepic" [src]="user.profilepic" alt="{{ user.nom }}" class="table-img">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

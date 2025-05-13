@@ -45,14 +45,8 @@
       </div>
       <button type="submit" [disabled]="profileForm.invalid">Mettre à jour</button>
   
-      <div class="form-group">
-        <label for="photo">Photo de profil</label>
-        <input type="file" id="photo" (change)="onFileChange($event)" accept="image/*" />
-        <div *ngIf="photoPreview" class="photo-preview">
-          <img [src]="photoPreview" alt="Aperçu de la photo" style="max-width: 200px;" />
-        </div>
-      </div>
-      <button type="submit" [disabled]="profileForm.invalid">Changer la photo</button>
+    
+      
   
    
     </form>
