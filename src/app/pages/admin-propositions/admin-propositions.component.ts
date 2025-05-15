@@ -4,6 +4,8 @@ import { NgFor, NgIf } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Pipe } from '@angular/core'; 
 import { TitleCasePipe } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
+
 
 
 
@@ -20,15 +22,18 @@ interface Proposition {
 @Component({
   selector: 'app-admin-propositions',
   standalone: true,
-  imports: [NgFor, NgIf, TitleCasePipe],
+  imports: [NgFor, NgIf, TitleCasePipe , LowerCasePipe],
   templateUrl: './admin-propositions.component.html',
   styleUrls: ['./admin-propositions.component.css']
 })
 export class AdminPropositionsComponent implements OnInit {
-  propositions: Proposition[] = [];
+  private apiUrl = 'http://localhost:8000/admin/propositions';
+   propositions: Proposition[] = [];
+  filteredPropositions: Proposition[] = [];
   isLoading: boolean = false;
   error: string | null = null;
   success: string | null = null;
+  showAll: boolean = false;
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
@@ -40,7 +45,7 @@ export class AdminPropositionsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
     this.success = null;
-    this.http.get<Proposition[]>('http://localhost:8000/admin/propositions', {
+    this.http.get<Proposition[]>(`${this.apiUrl}`, {
       headers: { Authorization: `Bearer ${this.userService.getToken()}` }
     }).subscribe({
       next: (data) => {
@@ -60,7 +65,8 @@ export class AdminPropositionsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
     this.success = null;
-    this.http.post(`http://localhost:8000/admin/propositions/${propositionId}/valider`, {}, {
+    
+    this.http.post(`${this.apiUrl}/${propositionId}/valider`, {}, {
       headers: { Authorization: `Bearer ${this.userService.getToken()}` }
     }).subscribe({
       next: () => {
@@ -80,7 +86,8 @@ export class AdminPropositionsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
     this.success = null;
-    this.http.post(`http://localhost:8000/admin/propositions/${propositionId}/rejeter`, {}, {
+    
+    this.http.post(`${this.apiUrl}/${propositionId}/rejeter`, {}, {
       headers: { Authorization: `Bearer ${this.userService.getToken()}` }
     }).subscribe({
       next: () => {
@@ -94,4 +101,36 @@ export class AdminPropositionsComponent implements OnInit {
       }
     });
   }
+
+  filterPropositions(): void {
+    if (this.showAll) {
+      this.filteredPropositions = this.propositions;
+    } else {
+      this.filteredPropositions = this.propositions.filter(prop =>
+        this.getStatusClass(prop.statut) === 'pending'
+      );
+    }
+  }
+
+  toggleShowAll(): void {
+    this.showAll = !this.showAll;
+    this.filterPropositions();
+  }
+
+  getStatusClass(status: string): string {
+    const normalized = status?.toLowerCase();
+    if (normalized === 'en_attente' || normalized === 'pending') return 'pending';
+    if (normalized === 'approuvee' || normalized === 'approved') return 'approved';
+    if (normalized === 'rejetee' || normalized === 'rejected') return 'rejected';
+    return normalized || '';
+  }
+
+  getStatusDisplay(status: string): string {
+    const normalized = status?.toLowerCase();
+    if (normalized === 'en_attente' || normalized === 'pending') return 'pending';
+    if (normalized === 'approuvee' || normalized === 'approved') return 'approved';
+    if (normalized === 'rejetee' || normalized === 'rejected') return 'rejected';
+    return status || '';
+  }
+
 }
