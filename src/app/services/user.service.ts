@@ -25,6 +25,9 @@ export class UserService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
+  private token: string | null = null;
+  private role: string | null = null;
+
   getProfile(): Observable<User> {
     const token = this.cookieService.get('token');
     const headers = { Authorization: `Bearer ${token}` };
@@ -47,6 +50,14 @@ export class UserService {
 
   login(user: { email: string; password: string }): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, user);
+  }
+
+  // getToken(): string | null {
+  //   return this.token || localStorage.getItem('token');
+  // }
+
+  getToken(): string | null {
+    return this.cookieService.get('token') || null;
   }
 
  isAdmin(): boolean {

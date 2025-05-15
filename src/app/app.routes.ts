@@ -11,6 +11,7 @@ import { AdminCreatePlantComponent } from './pages/admin-create-plant/admin-crea
 import { LoginGuard } from './guards/login.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { MyPropositionsComponent } from './pages/my-propositions/my-propositions.component';
+import { AdminPropositionsComponent } from './pages/admin-propositions/admin-propositions.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'propose-plant', component: ProposePlantComponent, canActivate: [AuthGuard] },
   { path: 'admin/create-plant', component: AdminCreatePlantComponent, canActivate: [AuthGuard] },
   { path: 'my-propositions', component: MyPropositionsComponent, canActivate: [AuthGuard] },
+  { path: 'admin/propositions', component: AdminPropositionsComponent } ,
   { path: '**', redirectTo: 'home' }
 ];
 
