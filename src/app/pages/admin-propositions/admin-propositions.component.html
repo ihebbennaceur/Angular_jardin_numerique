@@ -39,18 +39,21 @@
             <img *ngIf="proposition.image_url" [src]="proposition.image_url" 
                  alt="{{ proposition.name }}" class="table-img">
           </td>
-          <td class="status-{{ proposition.statut }}">{{ proposition.statut | titlecase }}</td>
+          <td class="status-{{ getStatusClass(proposition.statut) }}">
+            {{ getStatusDisplay(proposition.statut) | titlecase }}
+          </td>
           <td>
-            <button *ngIf="proposition.statut === 'pending'" 
+            <button *ngIf="getStatusClass(proposition.statut) === 'pending'" 
                     class="approve-btn" 
                     (click)="approveProposition(proposition.id, proposition.name)">
               Approve
             </button>
-            <button *ngIf="proposition.statut === 'pending'" 
+            <button *ngIf="getStatusClass(proposition.statut) === 'pending'" 
                     class="reject-btn" 
                     (click)="rejectProposition(proposition.id, proposition.name)">
               Reject
             </button>
+            <span *ngIf="getStatusClass(proposition.statut) !== 'pending'">No actions available</span>
           </td>
         </tr>
       </tbody>
