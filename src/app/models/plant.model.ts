@@ -7,4 +7,5 @@ export interface Plant {
     approuvee: boolean;
     proprietaire_id: number;
     created_by: string;
+    statut?: string;
   }

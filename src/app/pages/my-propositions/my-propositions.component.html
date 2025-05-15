@@ -10,7 +10,10 @@
         <p><strong>Type:</strong> {{ prop.type || 'N/A' }}</p>
         <p><strong>Description:</strong> {{ prop.description }}</p>
         <p><strong>Status:</strong> {{ prop.statut }}</p>
-        <p *ngIf="prop.image_url"><strong>Image:</strong> <img [src]="prop.image_url" alt="{{ prop.name }}" class="prop-image" /></p>
+        <p *ngIf="prop.image_url">
+          <strong>Image:</strong>
+          <img [src]="prop.image_url" alt="{{ prop.name }}" class="prop-image" (error)="onImageError(prop)" />
+        </p>
       </div>
     </div>
     <a routerLink="/propose-plant">Propose Another Plant</a>

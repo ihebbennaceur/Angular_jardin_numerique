@@ -12,8 +12,11 @@
       <a routerLink="/">Home</a>
       <a *ngIf="!userService.isLoggedIn()" routerLink="/register">Register</a>
       <a *ngIf="userService.isLoggedIn()" routerLink="/myprofile">Profile</a>
-      <input type="text" placeholder="Rechercher une plante..." />
+      <a *ngIf="userService.isLoggedIn() && !userService.isAdmin" routerLink="/my-propositions">My Propositions</a>
+      <a *ngIf="userService.isLoggedIn() && !userService.isAdmin" (click)="navigateToProposePlant()">Propose Plant</a>
+      <a *ngIf="userService.isLoggedIn() && userService.isAdmin()" routerLink="/admin/create-plant">Create Plant</a>
       <a *ngIf="userService.isLoggedIn() && userService.isAdmin()" routerLink="/admin/dashboard">Admin Dashboard</a>
+      <input type="text" placeholder="Rechercher une plante..." />
     </div>
     <div class="navbar-right">
       <a *ngIf="!userService.isLoggedIn()" routerLink="/login">Login</a>

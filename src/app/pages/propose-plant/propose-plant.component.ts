@@ -15,6 +15,7 @@ export class ProposePlantComponent implements OnInit {
   proposeForm: FormGroup;
   errorMessage = '';
   successMessage = '';
+  selectedFile: File | null = null;
 
   constructor(
     private plantService: PlantService,
@@ -30,7 +31,15 @@ export class ProposePlantComponent implements OnInit {
 
   ngOnInit() {
     console.log('ProposePlantComponent initialized');
+    
   }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      console.log('Selected file:', this.selectedFile.name);
+    } }
 
   submitProposition() {
     if (this.proposeForm.invalid) {

@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { PlantService } from '../../services/plant.service';
 import { CommonModule } from '@angular/common';
@@ -27,6 +26,11 @@ export class MyPropositionsComponent implements OnInit {
     this.plantService.getUserPropositions().subscribe({
       next: (propositions) => {
         console.log('Propositions loaded:', propositions);
+        propositions.forEach(prop => {
+          if (prop.image_url) {
+            console.log(`Image URL for ${prop.name}: ${prop.image_url}`);
+          }
+        });
         this.propositions = propositions;
       },
       error: (err) => {
@@ -34,5 +38,10 @@ export class MyPropositionsComponent implements OnInit {
         this.errorMessage = 'Failed to load propositions';
       }
     });
+  }
+
+  onImageError(prop: Plant) {
+    console.error(`Failed to load image for ${prop.name}: ${prop.image_url}`);
+    this.errorMessage = `Failed to load image for ${prop.name}`;
   }
 }

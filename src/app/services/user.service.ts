@@ -39,11 +39,7 @@ export class UserService {
     return this.http.put<UpdateProfileResponse>(`${this.baseUrl}/utilisateurs/me`, formData, { headers });
   }
 
-  proposerPlante(proposition: { name: string; type?: string; description: string; image_url?: string }): Observable<Plant> {
-    const token = this.cookieService.get('token');
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-    return this.http.post<Plant>(`${this.baseUrl}/propositions`, proposition, { headers });
-  }
+ 
 
   register(user: { nom: string; email: string; mot_de_passe: string; role?: string }): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/inscription`, user);

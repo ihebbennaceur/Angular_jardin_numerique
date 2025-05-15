@@ -16,10 +16,20 @@ export class NavbarComponent {
   }
 
   ngOnInit(): void {
-    
+    console.log('Role:', this.userService.isAdmin());
+    console.log('Logged in:', this.userService.isLoggedIn());
+
   }
 
 
+  navigateToProposePlant() {
+    console.log('Navigating to propose-plant');
+    this.router.navigate(['/propose-plant']).then(success => {
+      console.log('Navigation to propose-plant success:', success);
+    }).catch(err => {
+      console.error('Navigation to propose-plant error:', err);
+    });
+  }
 
 
 logout() {
