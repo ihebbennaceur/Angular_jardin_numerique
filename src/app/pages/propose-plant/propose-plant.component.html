@@ -1,0 +1,38 @@
+<div class="propose-plant-container">
+    <h2>Propose a New Plant</h2>
+    <form [formGroup]="proposeForm" (ngSubmit)="submitProposition()">
+      <div>
+        <label for="name">Name:</label>
+        <input
+          id="name"
+          formControlName="name"
+          placeholder="e.g., Snake Plant"
+        />
+        <div *ngIf="proposeForm.get('name')?.touched && proposeForm.get('name')?.invalid" class="error">
+          Name is required and must be at least 3 characters.
+        </div>
+      </div>
+      <div>
+        <label for="type">Type (optional):</label>
+        <input
+          id="type"
+          formControlName="type"
+          placeholder="e.g., Arbre"
+        />
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="e.g., Hardy plant with long, upright leaves."
+        ></textarea>
+        <div *ngIf="proposeForm.get('description')?.touched && proposeForm.get('description')?.invalid" class="error">
+          Description is required and must be at least 10 characters.
+        </div>
+      </div>
+      <button type="submit" [disabled]="proposeForm.invalid">Submit Proposition</button>
+    </form>
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>

@@ -1,0 +1,24 @@
+<div class="create-plant-container">
+    <h2>Create a New Plant (Admin)</h2>
+    <form (ngSubmit)="createPlant()">
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" [(ngModel)]="plant.name" name="name" required />
+      </div>
+      <div>
+        <label for="type">Type:</label>
+        <input id="type" [(ngModel)]="plant.type" name="type" />
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea id="description" [(ngModel)]="plant.description" name="description" required></textarea>
+      </div>
+      <div>
+        <label for="image_url">Image URL:</label>
+        <input id="image_url" [(ngModel)]="plant.image_url" name="image_url" />
+      </div>
+      <button type="submit">Create Plant</button>
+    </form>
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>

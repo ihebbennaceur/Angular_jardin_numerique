@@ -1,0 +1,17 @@
+<div class="my-propositions-container">
+    <h2>My Plant Propositions</h2>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <div *ngIf="propositions.length === 0 && !errorMessage">
+      <p>No propositions submitted yet.</p>
+    </div>
+    <div class="propositions-list">
+      <div class="proposition-card" *ngFor="let prop of propositions">
+        <h3>{{ prop.name }}</h3>
+        <p><strong>Type:</strong> {{ prop.type || 'N/A' }}</p>
+        <p><strong>Description:</strong> {{ prop.description }}</p>
+        <p><strong>Status:</strong> {{ prop.statut }}</p>
+        <p *ngIf="prop.image_url"><strong>Image:</strong> <img [src]="prop.image_url" alt="{{ prop.name }}" class="prop-image" /></p>
+      </div>
+    </div>
+    <a routerLink="/propose-plant">Propose Another Plant</a>
+  </div>

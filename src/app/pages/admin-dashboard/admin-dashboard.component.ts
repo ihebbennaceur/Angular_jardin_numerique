@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Plant } from '../../models/plant.model';
 import { User } from '../../models/user.model';
 
+import { Router } from '@angular/router';
 interface Proposition {
   id: number;
   name: string;
@@ -31,20 +32,46 @@ export class AdminDashboardComponent implements OnInit {
     { id: 1, name: 'Ficus', type: 'Indoor', description: 'Lush green leaves', image_url: 'https://example.com/ficus.jpg', approuvee: true, proprietaire_id: 1, created_by: 'User1' },
     { id: 2, name: 'Succulent', type: 'Desert', description: 'Thick leaves', image_url: 'https://example.com/succulent.jpg', approuvee: true, proprietaire_id: 2, created_by: 'User2' }
   ];
-  users: User[] = [
-    ];
+  users: User[] = [];
   errorMessage: string = '';
 
-  constructor(private userService: UserService) {}
-  
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     if (!this.userService.isAdmin()) {
       this.errorMessage = 'Access restricted to admins';
-      this.propositions = [];
-      this.plants = [];
-      this.users = [];
+      this.router.navigate(['/home']);
+      return;
     }
+
+    this.fetchUsers();
+  }
+
+  fetchUsers(): void {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (!token) {
+      this.errorMessage = 'Authorization token is missing';
+      return;
+    }
+
+    fetch('http://localhost:8000/admin/utilisateurs?skip=0&limit=10', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.users = data;
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+      });
   }
 
   approveProposition(propositionId: number): void {
@@ -57,7 +84,7 @@ export class AdminDashboardComponent implements OnInit {
           name: proposition.name,
           type: proposition.type,
           description: proposition.description,
-          image_url:"",
+          image_url: "",
           approuvee: true,
           proprietaire_id: proposition.utilisateur_id,
           created_by: 'Unknown'
