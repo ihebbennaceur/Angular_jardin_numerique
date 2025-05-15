@@ -1,28 +1,58 @@
-<h2>Plant Propositions</h2>
-<table class="data-table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Image</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let proposition of propositions">
-      <td>{{ proposition.name }}</td>
-      <td>{{ proposition.type || 'N/A' }}</td>
-      <td>{{ proposition.description }}</td>
-      <td>
-        <img *ngIf="proposition.image_url" [src]="proposition.image_url" alt="{{ proposition.name }}" class="table-img">
-      </td>
-      <td>{{ proposition.statut }}</td>
-      <td>
-        <button *ngIf="proposition.statut === 'pending'" (click)="approveProposition(proposition.id)">Approve</button>
-        <button *ngIf="proposition.statut === 'pending'" (click)="rejectProposition(proposition.id)">Reject</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+    <h2>Plant Propositions</h2>
+    
+    <!-- Loading Spinner -->
+    <div class="loading" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Loading propositions...</p>
+    </div>
+    
+    <!-- Success Message -->
+    <p class="success" *ngIf="success">{{ success }}</p>
+    
+    <!-- Error Message -->
+    <p class="error" *ngIf="error">{{ error }}</p>
+    
+    <!-- Empty State -->
+    <p class="empty-state" *ngIf="!isLoading && propositions.length === 0">
+      No propositions available.
+    </p>
+    
+    <!-- Propositions Table -->
+    <table class="data-table" *ngIf="!isLoading && propositions.length > 0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proposition of propositions">
+          <td>{{ proposition.name }}</td>
+          <td>{{ proposition.type || 'N/A' }}</td>
+          <td>{{ proposition.description }}</td>
+          <td>
+            <img *ngIf="proposition.image_url" [src]="proposition.image_url" 
+                 alt="{{ proposition.name }}" class="table-img">
+          </td>
+          <td class="status-{{ proposition.statut }}">{{ proposition.statut | titlecase }}</td>
+          <td>
+            <button *ngIf="proposition.statut === 'pending'" 
+                    class="approve-btn" 
+                    (click)="approveProposition(proposition.id, proposition.name)">
+              Approve
+            </button>
+            <button *ngIf="proposition.statut === 'pending'" 
+                    class="reject-btn" 
+                    (click)="rejectProposition(proposition.id, proposition.name)">
+              Reject
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
