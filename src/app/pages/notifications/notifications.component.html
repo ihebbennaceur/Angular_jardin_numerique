@@ -1,0 +1,15 @@
+<div class="notifications-container">
+  <h2>Mes Notifications</h2>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <div *ngIf="notifications.length === 0 && !errorMessage">
+    <p>Aucune notification pour le moment.</p>
+  </div>
+  <div class="notifications-list">
+    <div class="notification-card" *ngFor="let notification of notifications" [ngClass]="{'read': notification.is_read}">
+      <p><strong>{{ notification.type === 'proposition_validee' ? 'Proposition Validée' : 'Proposition Rejetée' }}</strong></p>
+      <p>{{ notification.message }}</p>
+      <p><small>{{ notification.created_at | date:'short' }}</small></p>
+      <button *ngIf="!notification.is_read" (click)="markAsRead(notification.id)" class="read-button">Marquer comme lu</button>
+    </div>
+  </div>
+</div>

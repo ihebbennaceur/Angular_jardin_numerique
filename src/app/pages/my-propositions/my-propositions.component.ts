@@ -44,4 +44,21 @@ export class MyPropositionsComponent implements OnInit {
     console.error(`Failed to load image for ${prop.name}: ${prop.image_url}`);
     this.errorMessage = `Failed to load image for ${prop.name}`;
   }
+
+  deleteProposition(propositionId: number) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer cette proposition ?')) {
+    this.plantService.deleteProposition(propositionId).subscribe({
+      next: () => {
+        console.log(`Proposition ${propositionId} supprimée avec succès`);
+        // Mettre à jour la liste des propositions en supprimant celle avec l'ID correspondant
+        this.propositions = this.propositions.filter(prop => prop.id !== propositionId);
+        this.errorMessage = ''; // Réinitialiser le message d'erreur
+      },
+      error: (err) => {
+        console.error('Erreur lors de la suppression de la proposition:', err);
+        this.errorMessage = err.message || 'Échec de la suppression de la proposition';
+      }
+    });
+  }
+}
 }

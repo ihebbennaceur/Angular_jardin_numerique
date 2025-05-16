@@ -1,0 +1,40 @@
+.notifications-container {
+  padding: 20px;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.notification-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.notification-card.read {
+  background-color: #f0f0f0;
+  opacity: 0.8;
+}
+
+.read-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.read-button:hover {
+  background-color: #45a049;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
