@@ -41,26 +41,53 @@ export class ProposePlantComponent implements OnInit {
       console.log('Selected file:', this.selectedFile.name);
     } }
 
+  // 
+  
   submitProposition() {
-    if (this.proposeForm.invalid) {
-      console.log('Form is invalid:', this.proposeForm.errors);
-      return;
-    }
-    const plant = this.proposeForm.value;
-    console.log('Submitting plant:', plant);
-    this.errorMessage = '';
-    this.successMessage = '';
-    this.plantService.proposePlant(plant).subscribe({
-      next: (response) => {
-        console.log('Proposition response:', response);
-        this.successMessage = 'Plant proposition submitted successfully!';
-        this.proposeForm.reset();
+  if (this.proposeForm.invalid) {
+    console.log('Form is invalid:', this.proposeForm.errors);
+    return;
+  }
+
+  this.errorMessage = '';
+  this.successMessage = '';
+
+  const plant = this.proposeForm.value;
+
+  if (this.selectedFile) {
+    // Étape 1 : uploader l'image
+    this.plantService.uploadImage(this.selectedFile).subscribe({
+      next: (imageResponse) => {
+        console.log('Image uploaded successfully:', imageResponse.image_url);
+        plant.image_url = imageResponse.image_url;
+
+        // Étape 2 : envoyer les données du formulaire avec l'URL de l'image
+        this.sendPlantData(plant);
       },
-      error: (err) => {
-        console.error('Proposition error:', err);
-        this.errorMessage = err.message || 'Failed to submit proposition';
-        console.log('Error details:', err.error); // Log full error response
+      error: (uploadErr) => {
+        console.error('Failed to upload image:', uploadErr);
+        this.errorMessage = uploadErr.message || 'Erreur lors du téléversement de l\'image';
       }
     });
+  } else {
+    // Pas d'image, envoyer juste les données textuelles
+    this.sendPlantData(plant);
   }
+}
+
+private sendPlantData(plant: any) {
+  this.plantService.proposePlant(plant).subscribe({
+    next: (response) => {
+      console.log('Plant proposition response:', response);
+      this.successMessage = 'Proposition soumise avec succès !';
+      this.proposeForm.reset();
+      this.selectedFile = null;
+    },
+    error: (err) => {
+      console.error('Error submitting proposition:', err);
+      this.errorMessage = err.message || 'Échec de la soumission de la proposition';
+    }
+  });
+}
+
 }

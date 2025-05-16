@@ -36,7 +36,7 @@
           Password must be at least 6 characters.
         </div>
 
-        <span *ngIf="errorMessage" class="error mb-8">{{ errorMessage }}</span>
+        <span *ngIf="errorMessage" class="error">{{ errorMessage }}</span>
       </div>
       <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
       <p>

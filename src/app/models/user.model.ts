@@ -6,4 +6,5 @@ export class User {
   confirmPassword?: string = '';
   profilepic: string = 'assets/profile2.jpg';
   role: string = 'user';  
+  id: number = 0;
 }

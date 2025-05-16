@@ -9,6 +9,7 @@ import { LowerCasePipe } from '@angular/common';
 
 
 
+
 interface Proposition {
   id: number;
   name: string;
@@ -22,7 +23,7 @@ interface Proposition {
 @Component({
   selector: 'app-admin-propositions',
   standalone: true,
-  imports: [NgFor, NgIf, TitleCasePipe , LowerCasePipe],
+  imports: [NgFor, NgIf, TitleCasePipe ],
   templateUrl: './admin-propositions.component.html',
   styleUrls: ['./admin-propositions.component.css']
 })

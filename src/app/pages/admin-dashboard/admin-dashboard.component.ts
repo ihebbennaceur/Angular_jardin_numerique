@@ -25,13 +25,8 @@ interface Proposition {
 })
 export class AdminDashboardComponent implements OnInit {
   propositions: Proposition[] = [
-    { id: 1, name: 'Monstera', type: 'Tropical', description: 'Large, split leaves', image_url: 'https://example.com/monstera.jpg', statut: 'pending', utilisateur_id: 1 },
-    { id: 2, name: 'Cactus', type: 'Desert', description: 'Spiky, low water', image_url: 'https://example.com/cactus.jpg', statut: 'pending', utilisateur_id: 2 }
-  ];
-  plants: Plant[] = [
-    { id: 1, name: 'Ficus', type: 'Indoor', description: 'Lush green leaves', image_url: 'https://example.com/ficus.jpg', approuvee: true, proprietaire_id: 1, created_by: 'User1' },
-    { id: 2, name: 'Succulent', type: 'Desert', description: 'Thick leaves', image_url: 'https://example.com/succulent.jpg', approuvee: true, proprietaire_id: 2, created_by: 'User2' }
-  ];
+];
+  plants: Plant[] = [];
   users: User[] = [];
   errorMessage: string = '';
 
@@ -112,4 +107,19 @@ export class AdminDashboardComponent implements OnInit {
       this.errorMessage = '';
     }
   }
+
+
+  deleteUser(userId: number): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(userId).subscribe({
+        next: (response) => {
+          this.users = this.users.filter(user => user.id !== userId);
+          this.errorMessage = response.message;
+        },
+        error: (error) => {
+          this.errorMessage = error.error.detail || 'Failed to delete user';
+        }
+      });
+    }
+}
 }

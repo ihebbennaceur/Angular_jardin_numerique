@@ -13,6 +13,10 @@ interface LoginResponse {
   user_email: string;
 }
 
+interface DeleteUserResponse {
+  message: string;
+}
+
 interface UpdateProfileResponse {
   message: string;
 }
@@ -88,5 +92,14 @@ export class UserService {
       formData,
       { headers }
     );
+  }
+
+
+  deleteUser(userId: number): Observable<DeleteUserResponse> {
+    const token = this.cookieService.get('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.delete<DeleteUserResponse>(`${this.baseUrl}/admin/utilisateurs/${userId}`, { headers });
   }
 }
