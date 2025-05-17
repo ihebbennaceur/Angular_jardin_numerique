@@ -1,0 +1,15 @@
+<div class="search-results">
+  <h2>Résultats de recherche pour "{{ query }}"</h2>
+  <div *ngIf="plants.length === 0">
+    <p>Aucune plante trouvée.</p>
+  </div>
+  <div class="plant-list">
+    <div *ngFor="let plant of plants" class="plant-card">
+      <img [src]="plant.image_url" [alt]="plant.name" />
+      <h3>{{ plant.name }}</h3>
+      <p>{{ plant.type }}</p>
+      <p>{{ plant.description }}</p>
+      <p>Créé par : {{ plant.created_by }}</p>
+    </div>
+  </div>
+</div>

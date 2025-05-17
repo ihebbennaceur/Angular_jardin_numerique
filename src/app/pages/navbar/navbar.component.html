@@ -14,10 +14,17 @@
       <a *ngIf="userService.isLoggedIn()" routerLink="/myprofile">Profile</a>
       <a *ngIf="userService.isLoggedIn() && !userService.isAdmin()" routerLink="/my-propositions">My Propositions</a>
       <a *ngIf="userService.isLoggedIn() && !userService.isAdmin()" (click)="navigateToProposePlant()">Propose Plant</a>
+
+       <a *ngIf="userService.isLoggedIn() && !userService.isAdmin() " routerLink="/notifications">
+      Notifications
+      <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </a>
+    
       <a *ngIf="userService.isLoggedIn() && userService.isAdmin()" routerLink="/admin/create-plant">Create Plant</a>
       <a *ngIf="userService.isLoggedIn() && userService.isAdmin()" routerLink="/admin/propositions">Plant Propositions</a>
       <a *ngIf="userService.isLoggedIn() && userService.isAdmin()" routerLink="/admin/dashboard">Admin Dashboard</a>
-      <input type="text" placeholder="Rechercher une plante..." />
+       <input type="text" placeholder="Rechercher une plante..." [(ngModel)]="searchQuery"  (keyup.enter)="searchPlants()"
+    />
     </div>
     <div class="navbar-right">
       <a *ngIf="!userService.isLoggedIn()" routerLink="/login">Login</a>

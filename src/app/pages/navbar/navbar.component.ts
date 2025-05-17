@@ -3,13 +3,18 @@ import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { NgIf } from '@angular/common';
 
+import { FormsModule } from '@angular/forms'
+
+
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink,NgIf],
+  imports: [RouterLink,NgIf, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  unreadCount: number = 0;
+  
 
   constructor(public userService: UserService, private router: Router) {
 
@@ -29,6 +34,14 @@ export class NavbarComponent {
     }).catch(err => {
       console.error('Navigation to propose-plant error:', err);
     });
+  }
+
+ searchQuery: string = '';
+  searchPlants() {
+    if (this.searchQuery.trim()) {
+      // Navigate to search results page with query parameter
+      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    }
   }
 
 

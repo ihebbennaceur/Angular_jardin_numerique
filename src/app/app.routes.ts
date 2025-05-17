@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PlantsComponent } from './pages/plants/plants.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { MyProfileComponent } from './pages/myprofile/myprofile.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { ProposePlantComponent } from './pages/propose-plant/propose-plant.component';
@@ -12,6 +12,8 @@ import { LoginGuard } from './guards/login.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { MyPropositionsComponent } from './pages/my-propositions/my-propositions.component';
 import { AdminPropositionsComponent } from './pages/admin-propositions/admin-propositions.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { SearchResultsComponent } from './pages/search-results/search-results.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -25,6 +27,10 @@ export const routes: Routes = [
   { path: 'admin/create-plant', component: AdminCreatePlantComponent, canActivate: [AuthGuard] },
   { path: 'my-propositions', component: MyPropositionsComponent, canActivate: [AuthGuard] },
   { path: 'admin/propositions', component: AdminPropositionsComponent } ,
+
+  { path: 'notifications', component: NotificationsComponent },
+  { path: 'search', component: SearchResultsComponent } ,
+
   { path: '**', redirectTo: 'home' }
 ];
 

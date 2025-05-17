@@ -5,12 +5,18 @@ import { catchError, map } from 'rxjs/operators';
 import { Plant } from '../models/plant.model';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { Notification } from '../models/notification.model';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlantService {
   private baseUrl = 'http://127.0.0.1:8000';
+
+  private unreadCountSubject = new BehaviorSubject<number>(0);
+  unreadCount$ = this.unreadCountSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -103,4 +109,84 @@ export class PlantService {
       headers: this.getAuthHeaders()
     });
   }
+
+  deleteProposition(propositionId: number): Observable<void> {
+  return this.http.delete<void>(`${this.baseUrl}/propositions/${propositionId}`, {
+    headers: this.getAuthHeaders()
+  }).pipe(
+    catchError((error: HttpErrorResponse) => {
+      console.error('Delete proposition error:', error);
+      console.log('Error response:', error.error);
+      if (error.status === 401) {
+        this.router.navigate(['/login']);
+        return throwError(() => new Error('Session expirée. Veuillez vous reconnecter.'));
+      }
+      if (error.status === 403) {
+        return throwError(() => new Error('Accès interdit : cette proposition ne vous appartient pas.'));
+      }
+      if (error.status === 404) {
+        return throwError(() => new Error('Proposition non trouvée.'));
+      }
+      return throwError(() => new Error(error.error.detail || 'Échec de la suppression de la proposition.'));
+    })
+  );
 }
+
+getNotifications(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.baseUrl}/notifications`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Get notifications error:', error);
+        console.log('Error response:', error.error);
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+          return throwError(() => new Error('Session expired. Please log in again.'));
+        }
+        return throwError(() => new Error(error.error.detail || 'Failed to fetch notifications'));
+      })
+    );
+  }
+
+  markNotificationAsRead(notificationId: number): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/notifications/${notificationId}/read`, {}, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Mark notification as read error:', error);
+        console.log('Error response:', error.error);
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+          return throwError(() => new Error('Session expired. Please log in again.'));
+        }
+        if (error.status === 404) {
+          return throwError(() => new Error('Notification non trouvée.'));
+        }
+        return throwError(() => new Error(error.error.detail || 'Failed to mark notification as read'));
+      }),
+      map(() => {
+        this.getUnreadNotificationsCount().subscribe(); // Mettre à jour unreadCount
+      })
+    );
+  }
+
+  getUnreadNotificationsCount(): Observable<number> {
+    return this.getNotifications().pipe(
+      map(notifications => {
+        const count = notifications.filter(notif => !notif.is_read).length;
+        this.unreadCountSubject.next(count);
+        return count;
+      })
+    );
+  }
+
+searchPlants(query: string, skip: number = 0, limit: number = 100): Observable<Plant[]> {
+    console.log('API call with query:', query);
+    return this.http.get<Plant[]>(`${this.baseUrl}/search`, {
+      params: { query, skip: skip.toString(), limit: limit.toString() }
+    });
+  }
+
+}
+
+
